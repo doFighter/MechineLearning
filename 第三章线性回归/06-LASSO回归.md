@@ -18,14 +18,22 @@ $$
 $LASSO$ 可以用来做 feature selection，而岭回归不行。或者说，LASSO更容易使得权重变为 0，而岭回归更容易使得权重接近 0。
 从贝叶斯角度看，LASSO（L1 正则）等价于参数 $w$ 的先验概率分布满足拉普拉斯分布，而 岭回归（L2 正则）等价于参数 $w$ 的先验概率分布满足高斯分布。
 
-- LASSO最小角回归法是一个适用于高维数据的回归算法，其主要的优点有：
+## 2 sklearn-LASSO算法
 
-　　1）特别适合于特征维度 $n$ 远高于样本数 $m$ 的情况。
+还是以之前的数据，使用 $sklearn$ 中的 LASSO 算法进行回归，代码如下：
 
-　　2）算法的最坏计算复杂度和最小二乘法类似，但是其计算速度几乎和前向选择算法一样
-
-　　3）可以产生分段线性结果的完整路径，这在模型的交叉验证中极为有用
-
-- 主要的缺点是：
-
-　　由于LASSO的迭代方向是根据目标的残差而定，所以该算法对样本的噪声极为敏感。
+```py
+import numpy as np
+# 必须从 sklearn 中引入 linear_model
+from sklearn import linear_model
+# 获取数据
+data = np.genfromtxt("data1.cvs", delimiter=',')
+x_data = data[:, 0:-1]
+y_data = data[:, -1]
+# 创建模型
+model = linear_model.LassoCV()
+model.fit(x_data, y_data)
+# 输出结果
+print(model.alpha_)
+print(model.coef_)
+```
